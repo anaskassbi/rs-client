@@ -115,7 +115,7 @@ const makeTeamService = (api) => ({
 const makePhdStudentsService = (api) => ({
   createPhdStudent: (phdStudent) => api.post(`/phdStudents`, phdStudent),
   updatePhdStudent: (phdStudent) => api.put(`/phdStudents`, phdStudent),
-  findAllPhdStudents: (_id) => api.get(`/phdStudentsLab/${_id}`),
+  findAllPhdStudents: (_id) => api.get(`/phdStudents`),
   findstudent: (_id) => api.get(`/phdStudents/${_id}`),
   deletePhdStudent: (_id) => api.delete(`/phdStudents/${_id}`),
   findStudentsOfUser: () => api.get(`/phdStudentsOfUser`),

@@ -25,7 +25,7 @@ const UserMenu = ({ user, UserHelper }) => (
     </Link>
     <div className="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
       <Link className="dropdown-item" to={"/profile/" + user._id} href="/#">
-        Profil
+        Profile
       </Link>
       <Link className="dropdown-item" to="/account" href="/#">
         Paramètres du compte

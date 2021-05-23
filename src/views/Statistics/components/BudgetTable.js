@@ -3,23 +3,30 @@ import { AppContext } from "../../../context/AppContext";
 import BudgetDetails from "../../components/BudgetDetails";
 import NoResultFound from "../../components/NoResultFound";
 
-const BudgetTable = ({ labBudget }) => {
+const BudgetTable = ({ labBudget, selectedLab }) => {
   const [modalShow, setModalShow] = useState(false);
   const [budgetData, setBudgetData] = useState([]);
   const [inputs, setInputs] = useState({});
   const [cats, setCats] = useState([]);
   const [sum, setSum] = useState(0);
   const [result, setResult] = useState(true);
+  const [labHead, setLabHead] = useState(false);
   const { ApiServices, user } = useContext(AppContext);
   const { budgetHistoryService } = ApiServices;
 
   const showModal = async (labData) => {
     console.log(labData)
     try {
-      const response = await budgetHistoryService.findHistory({ laboratory_id: user.laboratoriesHeaded[0]._id });
+      var response;
+      if (selectedLab != "" && selectedLab != undefined) {
+        setLabHead(true)
+        response = await budgetHistoryService.findHistory({ laboratory_id: selectedLab });
+      } else {
+        response = await budgetHistoryService.findHistory({ laboratory_id: user.laboratoriesHeaded[0]._id });
+      }
       setBudgetData(labData)
       var categories = [];
-      var tot= 0;
+      var tot = 0;
       response.data[0].budget.forEach((budget) => {
         if (budget.year != undefined && budget.year == labData.year) {
           setBudgetData(budget)
@@ -29,14 +36,14 @@ const BudgetTable = ({ labBudget }) => {
               ...inputs,
               [Object.keys(cat)[0]]: cat[Object.keys(cat)[0]],
             }));
-            tot=parseInt(tot)+parseInt(cat[Object.keys(cat)[0]]);
+            tot = parseInt(tot) + parseInt(cat[Object.keys(cat)[0]]);
           })
           setSum(tot)
         } else {
           setBudgetData(labData)
         }
       })
-    
+
       setCats(categories)
       setModalShow(true);
     } catch (error) {
@@ -91,10 +98,10 @@ const BudgetTable = ({ labBudget }) => {
                 return (<tr key={index}>
                   <td> {year}</td>
                   <td className="" key={index}>{labBudget[year] ?? 0}DH</td>
-                              
+
                   <td>
-                    
-                     <button type="button" className="btn btn-primary " onClick={() => showModal({ "budget": labBudget[year], "year": year })}>détail</button> </td>
+
+                    <button type="button" className="btn btn-primary " onClick={() => showModal({ "budget": labBudget[year], "year": year })}>détail</button> </td>
                 </tr>
                 )
               }
@@ -103,6 +110,7 @@ const BudgetTable = ({ labBudget }) => {
           </tbody>
         </table>
         <BudgetDetails
+          labHead={labHead}
           show={modalShow}
           hideModal={hideModal}
           labBudget={budgetData}

@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 const BudgetDetails = (props) => {
-    const { show, hideModal, labBudget, setInputs, setCats, cats, inputs, result, setResult, addBudgetHistory, sum, setSum } = props;
+    const { show, hideModal, labBudget, setInputs, setCats, cats, inputs, result, setResult, addBudgetHistory, sum, setSum ,labHead} = props;
     const defaultOptionsLottieCkeck = {
         loop: false,
         autoplay: true,
@@ -106,10 +106,12 @@ const BudgetDetails = (props) => {
                     <div className="row container">
                         <div className="col-6">
                             <CreatableSelect
+                                isDisabled={labHead}
                                 isMulti
                                 onChange={handleChange}
                                 options={defaultOptions}
                                 value={cats}
+
                             />
                             <h4 style={{ margin: "10px" }}>Le budget total à ne pas dépasser: {labBudget.budget} DH</h4>
                             <table className="table card-table table-vcenter text-nowrap datatable">
@@ -124,7 +126,7 @@ const BudgetDetails = (props) => {
                                         return (
                                             <tr key={index}>
                                                 <td>{e.label}</td>
-                                                <td key={index}><input onChange={handleInputsChange} name={e.label} defaultValue={e.sum} className="form-controll" /></td>
+                                                <td key={index}><input readOnly={labHead} onChange={handleInputsChange} name={e.label} defaultValue={e.sum} className="form-controll" /></td>
                                             </tr>
                                         )
                                     })}
@@ -157,7 +159,7 @@ const BudgetDetails = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
 
-                    {(result) ? <Button size="small" onClick={handleSubmit} variant="contained" color="primary">Enregistrer</Button> : ""}
+                    {(result && !labHead) ? <Button size="small" onClick={handleSubmit} variant="contained" color="primary">Enregistrer</Button> : ""}
 
 
                     <Button size="small" style={{ marginLeft: "5px" }} onClick={hideModal} variant="contained" color="secondary">Fermer</Button>

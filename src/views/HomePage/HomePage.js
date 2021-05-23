@@ -7,7 +7,7 @@ import { LoopIcon, SettingsIcon } from "../components/icons";
 import { AppContext } from "../../context/AppContext";
 import { Bar, Chart } from 'react-chartjs-2';
 import Icon from '@mdi/react';
-import { mdiAccountGroupOutline, mdiAccountGroup, mdiNoteMultiple } from '@mdi/js';
+import { mdiAccountClock,mdiAccountGroupOutline  ,mdiAccountMultipleMinus, mdiAccountGroup, mdiNoteMultiple } from '@mdi/js';
 
 const HomePage = () => {
   Chart.defaults.global.legend.labels.usePointStyle = true;
@@ -21,20 +21,29 @@ const HomePage = () => {
   const [state, setState] = useState({});
   const [classement, setClassement] = useState({});
   const [pubs, setPubs] = useState();
+  const [doctorantsSoutenus, setDoctorantsSoutenus] = useState(0);
+  const [doctorantTotal, setDoctorantsTotal] = useState(0);
 
   const updateStats = useCallback(async () => {
     const connectedUser = JSON.parse(localStorage.getItem("user"));
-
-
     try {
+      const responseAllPHD = await phdStudentService.findAllPhdStudents();
+      setDoctorantsTotal(responseAllPHD.data.length)
       const respDoc = await phdStudentService.findPhdStudentOfLab();
       if (respDoc.data) {
         var filtredDoc = new Array();
+        var docSoutenus = new Array();
         respDoc.data.students.forEach((doc) => {
-          if (parseInt(doc.end.split('-')[0]) >= new Date().getFullYear())
+          if (parseInt(doc.end.split('-')[0]) > new Date().getFullYear()) {
             filtredDoc.push(doc)
+          } else if (parseInt(doc.end.split('-')[0]) == new Date().getFullYear() && parseInt(doc.end.split('-')[1]) >= new Date().getMonth() + 1) {
+            filtredDoc.push(doc)
+          } else {
+            docSoutenus.push(doc)
+          }
         })
         setDoctorants(filtredDoc)
+        setDoctorantsSoutenus(docSoutenus)
       } else throw Error();
 
       const response = await userService.getFollowedUsers({ "laboratory_abbreviation": connectedUser.laboratoriesHeaded[0].abbreviation });
@@ -120,7 +129,7 @@ const HomePage = () => {
   return (
     <div class="container">
       {user.roles.includes("LABORATORY_HEAD") ? <div class="row">
-        <div class="col-sm-4">
+        <div class="col">
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-row">
@@ -128,14 +137,13 @@ const HomePage = () => {
                   <div class="round ">
                     <Icon path={mdiAccountGroup}
                       size={2}
-
                       color="#5cb85c" />
                   </div>
                 </div>
                 <div class="col-9 align-self-center text-right">
                   <div class="m-l-10">
                     <h5 class="mt-0">{researchers.length}</h5>
-                    <p class="mb-0 text-muted">Nombre des chercheurs</p>
+                    <p class="mb-0 text-muted">Chercheurs</p>
                   </div>
                 </div>
               </div>
@@ -143,13 +151,59 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div class="col-sm-4">
+        {user.roles.includes("RESEARCH_DIRECTOR") && 
+        <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-row">
+              <div class="col-3 align-self-center">
+                <div class="round ">
+                  <Icon path={mdiAccountGroupOutline }
+                    size={2}
+                    color="#292b2c" />
+                </div>
+              </div>
+              <div class="col-9 align-self-center text-right">
+                <div class="m-l-10">
+                  <h5 class="mt-0">{doctorantTotal}</h5>
+                  <p class="mb-0 text-muted">Doctorants</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>}
+
+        <div class="col">
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-row">
                 <div class="col-3 align-self-center">
                   <div class="round ">
-                    <Icon path={mdiAccountGroupOutline}
+                    <Icon path={mdiAccountMultipleMinus}
+                      size={2}
+                      color="#1e90ff" />
+                  </div>
+                </div>
+                <div class="col-9 align-self-center text-right">
+                  <div class="m-l-10">
+                    <h5 class="mt-0">{doctorantsSoutenus.length}</h5>
+                    <p class="mb-0 text-muted">Doctorants soutenus</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-row">
+                <div class="col-3 align-self-center">
+                  <div class="round ">
+                    <Icon path={mdiAccountClock }
                       size={2}
                       color="#f0ad4e" />
                   </div>
@@ -157,14 +211,14 @@ const HomePage = () => {
                 <div class="col-9 text-right align-self-center">
                   <div class="m-l-10 ">
                     <h5 class="mt-0">{doctorants.length}</h5>
-                    <p class="mb-0 text-muted">Nombre des doctorants en cours</p>
+                    <p class="mb-0 text-muted">Doctorants en cours</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col">
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-row">
@@ -178,7 +232,7 @@ const HomePage = () => {
                 <div class="col-9 text-right align-self-center">
                   <div class="m-l-10 ">
                     <h5 class="mt-0">{pubs}</h5>
-                    <p class="mb-0 text-muted">Nombre des publications</p>
+                    <p class="mb-0 text-muted">Publications</p>
                   </div>
                 </div>
               </div>
