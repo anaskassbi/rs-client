@@ -40,7 +40,7 @@ const Laboratories = () => {
   const inputsSkeleton2 = [
     { name: "name", label: columns[0], type: "input" },
     { name: "abbreviation", label: columns[1], type: "input" },
-  
+
   ];
 
   const clearInputs = () => {
@@ -146,8 +146,8 @@ const Laboratories = () => {
     return action === "ADDING"
       ? addLaboratory()
       : action === "EDITING"
-      ? updateLaboratory()
-      : updateLaboratoryData();
+        ? updateLaboratory()
+        : updateLaboratoryData();
   };
 
   const cancelEdit = () => {
@@ -182,6 +182,8 @@ const Laboratories = () => {
         </div>
         <div className="col-md-4">
           <CRUDForm
+            title="un nouveau laboratoire"
+
             {...{
               inputs,
               setInputs,

@@ -40,6 +40,31 @@ const makeUserService = (api) => ({
 
 });
 
+const makeGalerieUploadService = (api) => ({
+  createGalerie: (formData) => api.post(`/galerie`, formData),
+  findAllGaleries: (_id) => api.get(`/galerie/${_id}`),
+  findGalerie: (_id,_doc) => api.get(`/galerie/doc/${_id}/${_doc}`),
+  deleteGalerie: (_id) => api.delete(`/galerie/${_id}`),
+  removeElement: (type,racine,element)=>api.post("/galerie/removeElement",{type,racine,element}),
+  findGalerieById :(_id)=>api.get(`/galerie/findOne/${_id}`),
+  pushFile :(form)=>api.post("/galerie/pushFile",form)
+})
+const makeProjetsService = (api) => ({
+  createProjet: (projet) => api.post(`/projets`, projet),
+  updateProjet: (projet) => api.put(`/projets`, projet),
+  findProjet: (_id) => api.get(`/projets/${_id}`),
+  findAllProjets: () => api.get(`/projets`),
+  deleteProjet: (_id) => api.delete(`/projets/${_id}`)
+});
+
+const makeMotService = (api) => ({
+  createMot: (mot) => api.post(`/mots`, mot),
+  updateMot: (mot) => api.put(`/mots`, mot),
+  findMot: (_id) => api.get(`/mots/${_id}`),
+  findAllMots: () => api.get(`/mots`),
+  deleteMot: (_id) => api.delete(`/mots/${_id}`)
+});
+
 // const makePhdService = (api) => ({
 //   createUser: (user) => api.post(`/users`, user),
 //   updateUser: (user) => api.put(`/users`, user),
@@ -158,5 +183,10 @@ export {
   makeStatisticsService,
   makeNotificationsService,
   makePvUploadService,
-  makeBudgetHistoryService
+  
+  makeGalerieUploadService,
+  makeProjetsService,
+  makeMotService,
+
+  makeBudgetHistoryService,
 };

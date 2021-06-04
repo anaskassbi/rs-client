@@ -13,6 +13,11 @@ import {
   makePhdStudentsService,
   makePvUploadService,
   makeBudgetHistoryService,
+  makeProjetsService,
+  makeGalerieUploadService,
+  makeMotService,
+
+
 } from "./services";
 
 const makeApiServices = ({ token, alertService }) => {
@@ -90,7 +95,10 @@ const makeApiServices = ({ token, alertService }) => {
     statisticsService: makeStatisticsService(backendApi),
     notificationsService: makeNotificationsService(backendApi),
     pvUploadService : makePvUploadService(backendApi),
-    budgetHistoryService :makeBudgetHistoryService(backendApi)
+    budgetHistoryService :makeBudgetHistoryService(backendApi),
+    galerieUploadService : makeGalerieUploadService(backendApi),
+    projetsService : makeProjetsService(backendApi), 
+    motService: makeMotService(backendApi),
 
   };
 };

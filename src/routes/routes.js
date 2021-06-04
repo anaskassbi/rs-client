@@ -25,6 +25,9 @@ import DirectorTeamsStatistics from "../views/Statistics/DirectorTeamsStatistics
 import DirectorLabsStatistics from "../views/Statistics/DirectorLabStatistics";
 import Archive from '../views/Statistics/Archive'
 import GenralAssembly from '../views/Statistics/GenralAssembly'
+import Galerie from '../views/ManagingEntities/Galerie'
+import Projets from "../views/ManagingEntities/Projets";
+import Mots from "../views/ManagingEntities/Mots"; /////////////
 
 import {
   HomeIcon,
@@ -62,6 +65,27 @@ const entitiesPathsCategory = {
   isDropdown: true,
   icon: SettingsIcon,
   routes: [
+    {
+      title: "Mot du Directeur",
+      path: "/mots",
+      component: Mots,
+      roles: ["LABORATORY_HEAD"],
+      inMenu: true,
+    },
+    {
+      title: "Projets",
+      path: "/projets",
+      component: Projets,
+      roles: ["LABORATORY_HEAD"],
+      inMenu: true,
+    },
+    {
+      title: "Galerie",
+      path: "/galerie",
+      component: Galerie,
+      roles: ["LABORATORY_HEAD"],
+      inMenu: true,
+    },
     {
       title: "Université",
       path: "/university",

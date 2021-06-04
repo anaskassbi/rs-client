@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import "../../assets/css/form.css";
-const CRUDForm = ({ title,inputs, setInputs, inputsSkeleton, handleSubmit, cancelEdit, action, twoColumns, phdForm, user }) => {
+const CRUDFormM = ({ inputs, setInputs, inputsSkeleton, handleSubmit, cancelEdit, action, twoColumns, phdForm, user }) => {
   const handleInputsChange = (event) => {
     event.persist();
     setInputs((inputs) => ({
@@ -42,7 +42,7 @@ const CRUDForm = ({ title,inputs, setInputs, inputsSkeleton, handleSubmit, cance
     <div className="card">
       <form onSubmit={handleSubmit}>
         <div className="card-header">
-          <h3 className="card-title">{action === "ADDING" ? "Ajouter "+title : action === "EDITING" ? "Modifier un laboratoire" : ""}</h3>
+          <h3 className="card-title">{action === "ADDING" ? "Ajouter le mot de directeur" : action === "EDITING" ? "Modifier le mot du directeur" : ""}</h3>
         </div>
 
         <div className={`card-body form `}>
@@ -122,4 +122,4 @@ const CRUDForm = ({ title,inputs, setInputs, inputsSkeleton, handleSubmit, cance
   );
 };
 
-export default CRUDForm;
+export default CRUDFormM;

@@ -6,10 +6,13 @@ import { AppContext } from "../../context/AppContext";
 import UserListItem from "../Author/components/UserListItem";
 import { Link } from "react-router-dom";
 import swal from 'sweetalert';
+import BounceLoader from "react-spinners/BounceLoader";
 
 const Researchers = () => {
   const [researchers, setResearchers] = useState([]);
   const [newEmail, setNewEmail] = useState("");
+  let [loading, setLoading] = useState(false);
+  let [color, setColor] = useState("#1e90ff");
 
   const { user, ApiServices, alertService } = useContext(AppContext);
   const { pushAlert } = alertService;
@@ -49,6 +52,7 @@ const Researchers = () => {
     }).then(async (willDelete) => {
       if (willDelete) {
         try {
+          setLoading(true)
           const response = await userService.createUser({
             email: newEmail,
             password,
@@ -57,6 +61,8 @@ const Researchers = () => {
           });
           if (response.data){
             updateData();
+            setLoading(false)
+
           } else throw Error();
           swal("L'email à été envoyer avec succès", {
             icon: "success",
@@ -75,6 +81,21 @@ const Researchers = () => {
 
   return (
     <div className="container">
+      <div style={{
+        position: "fixed",
+        zIndex: "999",
+        height: "2em",
+        width: "4em",
+        overflow: "show",
+        margin: "auto",
+        top: "0",
+        left: "0",
+        bottom: "0",
+        right: "0",
+      }}>
+        <BounceLoader color={color} loading={loading} size={100} />
+
+      </div>
       <PageHeader title="Géstion des comptes des chercheurs" />
       <div className="row">
         <div className="col-md-4">

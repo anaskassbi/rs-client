@@ -7,7 +7,7 @@ import { LoopIcon, SettingsIcon } from "../components/icons";
 import { AppContext } from "../../context/AppContext";
 import { Bar, Chart } from 'react-chartjs-2';
 import Icon from '@mdi/react';
-import { mdiAccountClock,mdiAccountGroupOutline  ,mdiAccountMultipleMinus, mdiAccountGroup, mdiNoteMultiple } from '@mdi/js';
+import { mdiAccountClock, mdiAccountGroupOutline, mdiAccountMultipleMinus, mdiAccountGroup, mdiNoteMultiple } from '@mdi/js';
 
 const HomePage = () => {
   Chart.defaults.global.legend.labels.usePointStyle = true;
@@ -45,7 +45,11 @@ const HomePage = () => {
         setDoctorants(filtredDoc)
         setDoctorantsSoutenus(docSoutenus)
       } else throw Error();
+    } catch (error) {
+      console.log(error);
+    }
 
+    try {
       const response = await userService.getFollowedUsers({ "laboratory_abbreviation": connectedUser.laboratoriesHeaded[0].abbreviation });
       if (response.data) {
         setReaserchers(
@@ -55,8 +59,6 @@ const HomePage = () => {
         response.data.forEach((e) => {
           count += e.publications.length;
         })
-
-
         var pubData = new Map();
         var nom = new Array();
         var nombre = new Array();
@@ -107,11 +109,6 @@ const HomePage = () => {
         })
       }
       else throw Error();
-
-
-
-
-
     } catch (error) {
       console.log(error)
     }
@@ -151,28 +148,28 @@ const HomePage = () => {
           </div>
         </div>
 
-        {user.roles.includes("RESEARCH_DIRECTOR") && 
-        <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex flex-row">
-              <div class="col-3 align-self-center">
-                <div class="round ">
-                  <Icon path={mdiAccountGroupOutline }
-                    size={2}
-                    color="#292b2c" />
-                </div>
-              </div>
-              <div class="col-9 align-self-center text-right">
-                <div class="m-l-10">
-                  <h5 class="mt-0">{doctorantTotal}</h5>
-                  <p class="mb-0 text-muted">Doctorants</p>
+        {user.roles.includes("RESEARCH_DIRECTOR") &&
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-row">
+                  <div class="col-3 align-self-center">
+                    <div class="round ">
+                      <Icon path={mdiAccountGroupOutline}
+                        size={2}
+                        color="#292b2c" />
+                    </div>
+                  </div>
+                  <div class="col-9 align-self-center text-right">
+                    <div class="m-l-10">
+                      <h5 class="mt-0">{doctorantTotal}</h5>
+                      <p class="mb-0 text-muted">Doctorants</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>}
+          </div>}
 
         <div class="col">
           <div class="card">
@@ -203,7 +200,7 @@ const HomePage = () => {
               <div class="d-flex flex-row">
                 <div class="col-3 align-self-center">
                   <div class="round ">
-                    <Icon path={mdiAccountClock }
+                    <Icon path={mdiAccountClock}
                       size={2}
                       color="#f0ad4e" />
                   </div>

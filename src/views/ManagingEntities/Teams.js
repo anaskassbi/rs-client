@@ -212,6 +212,8 @@ const Teams = () => {
         </div>
         <div className="col-md-4">
           <CRUDForm
+            title="une nouvelle équipe"
+
             {...{
               inputs,
               setInputs,

@@ -142,8 +142,8 @@ const Establishments = (props) => {
     action === "ADDING"
       ? addEstablishment()
       : action === "EDITING"
-      ? updateEstablishment()
-      : updateEstablishmentData();
+        ? updateEstablishment()
+        : updateEstablishmentData();
 
     event.preventDefault();
   };
@@ -184,6 +184,7 @@ const Establishments = (props) => {
         </div>
         <div className="col-md-4">
           <CRUDForm
+            title="une nouvelle établissements"
             {...{
               inputs,
               setInputs,
