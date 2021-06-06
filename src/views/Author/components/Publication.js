@@ -262,7 +262,7 @@ const Publication = ({
           if(url!=""){
             var IF="";
             var annee=publication.year;
-            console.log("l3aammm"+annee)
+            console.log("l3aammmzziiiinnn")
             var IFScraper=await scraperService.getIFData(url);
             console.log("ha ljawab"+IFScraper.data.author.name[0])
             for(var j=0;j<IFScraper.data.author.name[0].year.length;j++){
