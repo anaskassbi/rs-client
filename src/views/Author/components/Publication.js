@@ -257,7 +257,7 @@ const Publication = ({
       } else {
         setIsFetched(true);
         console.log("IFFFF est :"+response.data.journal["IF"])
-        if(response.data.journal["IF"]==null){
+        if(response.data.journal["IF"]==""){
           console.log("hana dakhal"+url)
           if(url!=""){
             var IF="";
