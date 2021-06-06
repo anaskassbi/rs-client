@@ -256,13 +256,46 @@ const Publication = ({
         });
       } else {
         setIsFetched(true);
-        updatePublication(index, {
-          ...publication,
-          IF: response.data.journal["IF"],
-          SJR: response.data.journal["SJR"],
-          searchedFor: true,
-        });
         console.log("IFFFF est :"+response.data.journal["IF"])
+        if(response.data.journal["IF"]==""){
+          if(url!=""){
+            var IF="";
+            var annee=publication.year;
+          
+            var IFScraper=await scraperService.getIFData(url);
+            for(var j=0;j<IFScraper.data.author.name[0].year.length;j++){
+              if(IFScraper.data.author.name[0].year[j]==annee){
+                IF=IFScraper.data.author.name[0].IF[j];
+                console.log("iiiiffff"+IF);
+                updatePublication(index, {
+                  ...publication,
+                  IF: IF,
+                  SJR: response.data.journal["SJR"],
+                  searchedFor: true,
+                });
+               
+               
+              }
+            }
+          }else{
+            updatePublication(index, {
+              ...publication,
+              IF: response.data.journal["IF"],
+              SJR: response.data.journal["SJR"],
+              searchedFor: true,
+            });
+          }
+        }else{
+          updatePublication(index, {
+            ...publication,
+            IF: response.data.journal["IF"],
+            SJR: response.data.journal["SJR"],
+            searchedFor: true,
+          });
+          
+        }
+       
+        
         const userP=user._id;
        const responseDB=userService.addSJR({
           id:userP,
@@ -271,27 +304,7 @@ const Publication = ({
           SJR: response.data.journal["SJR"],
         })
       };
-      if(response.data.journal["IF"]==""){
-      if(url!=""){
-        var IF="";
-        var annee=publication.year;
-      
-        var IFScraper=await scraperService.getIFData(url);
-        for(var j=0;j<IFScraper.data.author.name[0].year.length;j++){
-          if(IFScraper.data.author.name[0].year[j]==annee){
-            IF=IFScraper.data.author.name[0].IF[j];
-            console.log("iiiiffff"+IF);
-            setIsFetched(true);
-            updatePublication(index, {
-              ...publication,
-              IF: IF,
-              searchedFor: true,
-            });
-           
-          }
-        }
-      }
-    }
+     
       
     }catch (e) {
       updatePublication(index, {
