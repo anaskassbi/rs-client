@@ -257,7 +257,8 @@ const Publication = ({
       } else {
         setIsFetched(true);
         console.log("IFFFF est :"+response.data.journal["IF"])
-        if(response.data.journal["IF"]==""){
+        if(response.data.journal["IF"]==null){
+          console.log("hana dakhal"+url)
           if(url!=""){
             var IF="";
             var annee=publication.year;
