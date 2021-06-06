@@ -27,8 +27,8 @@ const Publication = ({
 
 
 
+     
 
-   
     var url="";
  if (publication.source=="Mobile Information Systems"){
       
@@ -271,6 +271,27 @@ const Publication = ({
           SJR: response.data.journal["SJR"],
         })
       };
+      if(response.data.journal["IF"]==""){
+      if(url!=""){
+        var IF="";
+        var annee=publication.year;
+      
+        var IFScraper=await scraperService.getIFData(url);
+        for(var j=0;j<IFScraper.data.author.name[0].year.length;j++){
+          if(IFScraper.data.author.name[0].year[j]==annee){
+            IF=IFScraper.data.author.name[0].IF[j];
+            console.log("iiiiffff"+IF);
+            setIsFetched(true);
+            updatePublication(index, {
+              ...publication,
+              IF: IF,
+              searchedFor: true,
+            });
+           
+          }
+        }
+      }
+    }
       
     }catch (e) {
       updatePublication(index, {
