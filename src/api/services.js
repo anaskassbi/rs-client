@@ -8,6 +8,7 @@ const makeScraperService = (api) => ({
   getAuthorData: (platform, authorId) =>
     api.get(`/author/${platform}/${authorId}`),
   getJournalData: (jouranlName, year) => api.get(`/journal/${jouranlName}/${year}`),
+  getIFData:(source)=>api.get(`/IF/${source}`)
 });
 
 const makeUserService = (api) => ({
