@@ -270,7 +270,7 @@ const Publication = ({
           SJR: response.data.journal["SJR"],
         })
       }
-      if(IFREC!=""){
+      if(IFREC==""){
         if(url!=""){
           var IF="";
           var annee=publication.year;
