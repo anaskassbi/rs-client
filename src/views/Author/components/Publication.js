@@ -5,6 +5,8 @@ import Loader from "../../components/Loader";
 import swal from 'sweetalert';
 import { IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
+import UpdateIcon from '@material-ui/icons/Update';
+import UpdateFormulaire from "./updateFormulaire";
 
 const Publication = ({
   author,
