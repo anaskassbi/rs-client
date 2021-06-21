@@ -334,7 +334,34 @@ const Publication = ({
       isMounted = false;
     };
   }, []);
-
+  const [modalShow, setModalShow] = useState(false);
+  const showModal = (props) => {
+    setModalShow(true);
+  }
+  const hideModal = () => {
+    setModalShow(false);
+  }
+  const [pub, setPub] = useState({
+    _id:publication._id,
+    auteur: publication.authors.join("; "),
+    titre: publication.title,
+    annee: publication.year,
+    citation: publication.citation ? publication.citation.replace("*", "") : "",
+    source: publication.source,
+    IF: publication.IF ?? " ",
+    SJR: publication.SJR ?? " ",
+  });
+  const clearInputs = () => {
+    setPub({
+      auteur: "",
+      titre: "",
+      annee: "",
+      citation: "",
+      source: "",
+      IF: "",
+      SJR: "",
+    });
+  };
 
   const deletePub = async (e) =>{
     var idPub=e.currentTarget.id;
@@ -382,6 +409,59 @@ const Publication = ({
     
   }
 
+  const updatePub = () => {
+
+    swal({
+      title: "Confirmation",
+      text: "Etes vous sur de vouloir modifier cette publication ?",
+      icon: "warning",
+      buttons: true,
+    })
+      .then(async (willAdd) => {
+        if (willAdd) {
+          const userP = user._id;
+
+          try {
+            const response = userService.updatePub({
+              idAuthor: userP,
+              id_: publication._id,
+              authors: pub.auteur.split(";"),
+              title: pub.titre,
+              citation: pub.citation,
+              year: pub.annee,
+              source: pub.source,
+              IF: pub.IF,
+              SJR: pub.SJR
+
+
+
+            });
+            console.log(userP+publication._id+pub.titre)
+            getProfile();
+            swal("La publication est modifiée", {
+              icon: "success",
+            });
+            hideModal();
+            if (response.data) {
+              pushAlert({
+                type: "success",
+                message: "Le mot de passe a été mis à jour",
+              });
+
+            } else throw Error();
+          } catch (e) {
+            pushAlert({
+              message: "Incapable de mettre à jour la photo de profil",
+            });
+          }
+
+        } else {
+          swal("l'operation est annulée");
+
+        }
+      });
+  };
+
 
   const fetchedButton = (
     <button
@@ -392,6 +472,7 @@ const Publication = ({
     </button>
   );
   return (
+    <>
     <tr style={{ whiteSpace: "break-spaces " }} key={publication.title}>
       <td style={{ width: "60%" }}>
         {publication.title}
@@ -450,6 +531,13 @@ const Publication = ({
         {!isFetched && !publication.searchedFor && !isLoading && fetchedButton}
       </td>
       <td>
+          <IconButton id={publication._id}
+            size="small" color="primary" component="span"
+            onClick={showModal}>
+            <UpdateIcon />
+          </IconButton>
+      </td>
+      <td>
 
       <IconButton id={publication._id}
      size="small" color="secondary" component="span"
@@ -458,6 +546,10 @@ const Publication = ({
         </IconButton>
       </td>
     </tr>
+     <UpdateFormulaire show={modalShow} hideModal={hideModal} pub={pub}
+     setPub={setPub}  clearInputs={clearInputs} updatePub={updatePub}
+   />
+   </>
   );
 };
 

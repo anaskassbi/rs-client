@@ -77,7 +77,7 @@ const Publications = ({ author, setAuthor, platform, getProfile }) => {
           try {
             const response = userService.addPub({
               idAuthor: userP,
-              authors: pub.auteur,
+              authors: pub.auteur.split(";"),
               title: pub.titre,
               citation: pub.citation,
               year: pub.annee,
@@ -130,7 +130,8 @@ const Publications = ({ author, setAuthor, platform, getProfile }) => {
               <th className="text-center">
                 Récupération <br /> des données
               </th>
-              <th>actions</th>
+              <th>modifier</th>
+              <th>supprimer</th>
             </tr>
           </thead>
           <tbody>

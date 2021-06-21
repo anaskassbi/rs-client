@@ -15,6 +15,7 @@ const makeUserService = (api) => ({
   findAllPublications: () => api.get("/publications"),
   findAllReasearchersOfLab: (_id) => api.get(`/users/lab/${_id}`),
   addPub:(pub)=>api.post(`/add-pub`,pub),
+  updatePub:(pub)=> api.post(`/update-pub`,pub),
   deletePub:(pub)=>api.post(`/delete-pub`,pub),
   updateCitation:(citation)=>api.post(`/update-citation`,citation),
   addSJR:(SJR)=>api.post(`/add-SJR`,SJR),
