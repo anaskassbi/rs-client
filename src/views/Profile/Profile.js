@@ -311,6 +311,8 @@ const Profile = () => {
                       author={correspondingFollowedUser}
                       setAuthor={setCorrespondingFollowedUser}
                       getProfile={getProfile}
+                      isAuthor={true}
+
                     />
                   </Fragment>
                 )}

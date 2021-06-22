@@ -152,6 +152,7 @@ const Author = (props) => {
               platform={platform}
               author={author}
               setAuthor={setAuthor}
+              isAuthor={false}
             />
           </div>
           <div className="col-lg-4">
