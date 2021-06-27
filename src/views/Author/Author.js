@@ -12,7 +12,7 @@ import { useParams, useLocation } from "react-router-dom";
 import AuthorHeader from "./components/AuthorHeader";
 import Coauthors from "./components/Coauthors";
 import AuthorCitations from "./components/AuthorCitations";
-import Publications from "./components/Publications";
+import PublicationsAuth from "./components/PublicationsAuth";
 
 import { AppContext } from "../../context/AppContext";
 import NoResultFound from "../components/NoResultFound";
@@ -148,11 +148,10 @@ const Author = (props) => {
               isSendingFollow={isSendingFollow}
               isAllowedToFollow={isAllowedToFollow}
             />
-            <Publications
+            <PublicationsAuth
               platform={platform}
               author={author}
               setAuthor={setAuthor}
-              isAuthor={false}
             />
           </div>
           <div className="col-lg-4">
