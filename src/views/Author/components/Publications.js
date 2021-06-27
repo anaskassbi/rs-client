@@ -6,23 +6,11 @@ import AddFormulaire from "./addformulaire";
 import { AppContext } from "../../../context/AppContext";
 import swal from 'sweetalert';
 
-const Publications = ({ author, setAuthor, platform, getProfile,isAuthor }) => {
-  const { ApiServices, user, alertService } = useContext(AppContext);
+const Publications = ({ author, setAuthor, platform, getProfile }) => {
+  const { ApiServices, user, setUser, alertService } = useContext(AppContext);
   const { pushAlert } = alertService;
   const { userService } = ApiServices;
-  const [canEdit,setCanEdit] = useState(false); 
-
   useEffect(() => {
-    console.log("===========>")
-    var count=0;
-    author.publications.forEach((p) => {
-      if(p.authors.join("").toLowerCase().includes(user.lastName.toLowerCase())){
-        count++;
-      }
-    });
-    if(count==author.publications.length){
-      setCanEdit(true);
-    }
     setTimeout(() => {
       const publicationsTmp = author.publications.map((p) => ({
         ...p,
@@ -96,8 +84,10 @@ const Publications = ({ author, setAuthor, platform, getProfile,isAuthor }) => {
               source: pub.source,
               IF: pub.IF,
               SJR: pub.SJR
+
+
+
             });
-            
             getProfile();
             swal("La publication est bien ajoutée", {
               icon: "success",
@@ -130,10 +120,9 @@ const Publications = ({ author, setAuthor, platform, getProfile,isAuthor }) => {
         <table className="table card-table table-vcenter text-nowrap ">
           <thead>
             <tr>
-              {isAuthor&&<th>Titre<IconButton onClick={() => showModal()} aria-label="delete">
+              <th>Titre<IconButton onClick={() => showModal()} aria-label="delete">
                 <AddIcon />
-              </IconButton></th>}
-              
+              </IconButton></th>
               <th className="text-center">Année</th>
               <th className="text-center">Citée</th>
               <th className="text-center">IF</th>
@@ -141,9 +130,8 @@ const Publications = ({ author, setAuthor, platform, getProfile,isAuthor }) => {
               <th className="text-center">
                 Récupération <br /> des données
               </th>
-              {isAuthor&& canEdit &&<><th>modifier</th>
-              <th>supprimer</th></>}
-              
+              <th>modifier</th>
+              <th>supprimer</th>
             </tr>
           </thead>
           <tbody>
@@ -159,8 +147,6 @@ const Publications = ({ author, setAuthor, platform, getProfile,isAuthor }) => {
                     publication={publication}
                     updatePublication={updatePublication}
                     author={author}
-                    isAuthor={isAuthor}
-                    canEdit={canEdit}
                   />
                 ))}
           </tbody>
